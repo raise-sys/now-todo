@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>今やること</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body { font-family: sans-serif; text-align: center; padding: 30px; }
+    .time { font-size: 20px; margin-bottom: 20px; }
+    .do { font-size: 24px; color: green; margin-bottom: 10px; }
+    .dont { font-size: 20px; color: red; }
+  </style>
+</head>
+<body>
+  <div class="time" id="time">--:--</div>
+  <div class="do" id="do">読み込み中にゃん…</div>
+  <div class="dont" id="dont"></div>
+
+  <script>
+    function updateContent() {
+      const now = new Date();
+      const hour = now.getHours();
+      const day = now.getDay(); // 日曜:0, 月曜:1, ..., 土曜:6
+
+      let doText = "";
+      let dontText = "";
+
+      if (day >= 1 && day <= 5) { // 平日
+        if (hour >= 9 && hour < 12) {
+          doText = "✅ 午後試験の過去問を解く";
+          dontText = "❌ 競馬情報のチェック";
+        } else if (hour >= 13 && hour < 17) {
+          doText = "✅ 会議・作業に集中";
+          dontText = "❌ ネットサーフィン";
+        } else {
+          doText = "✅ 明日の準備 or リラックス";
+          dontText = "❌ 無目的なスマホ操作";
+        }
+      } else { // 土日
+        doText = "✅ 運動や趣味の時間";
+        dontText = "❌ 仕事のことを考える";
+      }
+
+      // 日時の表示
+      const timeStr = now.toLocaleString("ja-JP", {
+        year: "numeric", month: "2-digit", day: "2-digit",
+        hour: "2-digit", minute: "2-digit", second: "2-digit"
+      });
+
+      document.getElementById("time").textContent = timeStr;
+      document.getElementById("do").textContent = doText;
+      document.getElementById("dont").textContent = dontText;
+    }
+
+    // 初回と1秒ごとに更新
+    updateContent();
+    setInterval(updateContent, 1000);
+  </script>
+</body>
+</html>
